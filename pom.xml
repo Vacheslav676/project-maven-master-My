@@ -128,6 +128,23 @@
             </plugin>
             <!-- Окончание плагина -->
 
+            <!-- Начало Jar  плагина -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Class-Path>lib/dependency.jar</Class-Path>
+                            <Main-Class>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</Main-Class>
+                            <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- Конец Jar  плагина -->
+
 
             <!-- Run java-fx app over Maven -->
             <plugin>
