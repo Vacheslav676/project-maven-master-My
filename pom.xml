@@ -15,7 +15,7 @@
         <!--<properties>: Элемент <properties> используется для определения пользовательских свойств,
         которые могут быть использованы в других частях файла pom.xml.
         Здесь определено свойство tests.skip со значением true. -->
-        <tests.skip>true</tests.skip>
+        <tests.skip>false</tests.skip>
         <!--Конец 1я из 2х часть кода для пропуска тестов -->
 
     </properties>
@@ -69,6 +69,9 @@
                 <version>3.2.2</version>
                 <configuration>
                     <skipTests>${tests.skip}</skipTests>
+                    <excludes>
+                        <exclude>**/StrangeTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
