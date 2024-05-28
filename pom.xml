@@ -47,6 +47,15 @@
     </dependencies>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>${project.build.directory}/dependencies</directory>
+                <targetPath>lib</targetPath>
+            </resource>
+        </resources>
+
+
         <plugins>
             <!-- Usual compilation -->
             <plugin>
@@ -57,6 +66,8 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
+
 
             <!--Начало 2я из 2х часть кода для пропуска тестов -->
             <!--2. 2. Maven плагин maven-surefire-plugin, используется для запуска тестов в проекте.
@@ -115,7 +126,7 @@
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>package</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
@@ -135,15 +146,24 @@
                 <version>3.3.0</version>
                 <configuration>
                     <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
+                        </manifest>
                         <manifestEntries>
-                            <Class-Path>lib/dependency.jar</Class-Path>
-                            <Main-Class>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</Main-Class>
+                            <!--<Class-Path>lib/dependency.jar</Class-Path>-->
+
                             <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
+                            <Class-Path>./</Class-Path>
                         </manifestEntries>
                     </archive>
+
                 </configuration>
             </plugin>
             <!-- Конец Jar  плагина -->
+
+
 
 
             <!-- Run java-fx app over Maven -->
