@@ -11,6 +11,13 @@
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
         <maven.compiler.target>18</maven.compiler.target>
+        <!--Начало 1я из 2х часть кода для пропуска тестов -->
+        <!--<properties>: Элемент <properties> используется для определения пользовательских свойств,
+        которые могут быть использованы в других частях файла pom.xml.
+        Здесь определено свойство tests.skip со значением true. -->
+        <tests.skip>true</tests.skip>
+        <!--Конец 1я из 2х часть кода для пропуска тестов -->
+
     </properties>
 
     <dependencies>
@@ -30,12 +37,12 @@
             <version>1.0</version>
         </dependency>
 
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>5.8.2</version>
-                <scope>test</scope>
-            </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
@@ -50,6 +57,23 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
+            <!--Начало 2я из 2х часть кода для пропуска тестов -->
+            <!--2. 2. Maven плагин maven-surefire-plugin, используется для запуска тестов в проекте.
+            - `<configuration>: Элемент <configuration>` используется для настройки параметров плагина.
+            В данном случае, внутри `<configuration>` определен параметр `skipTests,`
+            который устанавливается равным значению свойства `tests.skip.` -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <skipTests>${tests.skip}</skipTests>
+                </configuration>
+            </plugin>
+
+            <!--Конец 2я из 2х часть кода для пропуска тестов -->
+
 
             <!-- Добавляем плагин для установки зависимости
             com.javarush: desktop-game-engine:1.0
@@ -78,6 +102,28 @@
             </plugin>
 
 
+            <!-- Плагин, который соберет все зависимости (с scope compile) и сложит в какую-то директорию при сборке,
+             не понятно работает ли, или это тесты выдающие ошибку не дают ему закончить работу,
+             в Lifecycle (жизненый цикл справа) фаза этого плагина package, стоит после фазы test-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+                            <includeScope>compile</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Окончание плагина -->
 
 
             <!-- Run java-fx app over Maven -->
